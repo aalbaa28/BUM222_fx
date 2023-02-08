@@ -24,7 +24,7 @@ public interface FlightBooker {
 	 * @return					A List of concrete flights that meet the restrictions
 	 */
 	public List<ConcreteFlight> getMatchingConFlights(String departureCity,
-													  String arrivalCity, Date date);
+													  String arrivalCity, Date date, String fare, int numTickets);
 
 
 	/**

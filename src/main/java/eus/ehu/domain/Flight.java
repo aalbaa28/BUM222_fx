@@ -69,10 +69,10 @@ public class Flight {
 	}
 
 
-	public ArrayList<ConcreteFlight> getConcreteFlights(Date date) {
+	public ArrayList<ConcreteFlight> getConcreteFlights(Date date, String fare, int tickets) {
 		ArrayList<ConcreteFlight> lInDate = new ArrayList<ConcreteFlight>();
 		for (ConcreteFlight cfl : concreteFlights) {
-			if (date.equals(cfl.getDate()))
+			if (date.equals(cfl.getDate()) && cfl.availableTickets(fare, tickets))
 				lInDate.add(cfl);
 		}
 		return lInDate;

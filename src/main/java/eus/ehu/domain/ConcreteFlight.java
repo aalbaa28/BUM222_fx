@@ -33,7 +33,6 @@ public class ConcreteFlight {
 		flight.addConcreteFlight(this); //'flight -- concrete flight' relation must be kept two-way
 	}
 
-
 	public String getCfCode() {
 		return cfCode;
 	}
@@ -130,4 +129,21 @@ public class ConcreteFlight {
 		return flight.toString() + " | " + dateFormat.format(date) + " [" + departureTime + "]";
 		}
 
+	public boolean availableTickets(String fare, int tickets) {
+		//tenemos que mirar si hay tickets disponibles o no
+		if (fare.equals("First class") && getFreeFirstSeatNo()>=tickets){
+			return true;
+		}
+		else if (fare.equals("Business class") && getFreeBusinessSeatNo()>=tickets){
+			return true;
+		}
+		else if(fare.equals("Economy class") && getFreeEconomySeatNo()>=tickets){
+			return true;
+		}
+		else{
+			return false;
+		}
+
+
+	}
 }

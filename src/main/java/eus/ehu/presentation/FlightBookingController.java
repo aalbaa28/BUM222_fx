@@ -29,9 +29,10 @@ public class FlightBookingController {
     private ObservableList<ConcreteFlight> conFlightInfo = FXCollections.observableArrayList();
 
     @FXML
-    private ListView<ConcreteFlight> conFlightList;
+    private ComboBox<ConcreteFlight> conFlightList;
     ;
-
+    @FXML
+    private  TextField ticket;
     @FXML
     private Button bookSelectedConFlightButton;
 
@@ -61,6 +62,9 @@ public class FlightBookingController {
 
     @FXML
     private RadioButton businessRB;
+
+    @FXML
+    private ToggleGroup fareRB;
 
     private FlightBooker businessLogic;
     private ConcreteFlight selectedConFlight;
@@ -108,7 +112,8 @@ public class FlightBookingController {
      */
     @FXML
     void searchConFlightsButton(ActionEvent event) {
-
+        RadioButton selectedToggle = (RadioButton) fareRB.getSelectedToggle();
+        System.out.println(selectedToggle.getText());
         conFlightInfo.clear();
 
         String chosenDateString = monthCombo.getValue() + " " +
@@ -121,7 +126,7 @@ public class FlightBookingController {
             Date chosenDate = format.parse(chosenDateString);
             List<ConcreteFlight> foundConFlights = businessLogic.
                     getMatchingConFlights(departureInput.getText(),
-                            arrivalInput.getText(), chosenDate);
+                            arrivalInput.getText(), chosenDate, selectedToggle.getText(), Integer.parseInt(ticket.getText()));
             for (ConcreteFlight v : foundConFlights)
                 conFlightInfo.add(v);
             if (foundConFlights.isEmpty())
@@ -135,6 +140,12 @@ public class FlightBookingController {
                     " is not valid. Please correct it");
         }
 
+
+    }
+
+    RadioButton getButton(){
+        RadioButton selectedToggle = (RadioButton) fareRB.getSelectedToggle();
+        return selectedToggle;
     }
 
     /**
@@ -146,11 +157,11 @@ public class FlightBookingController {
     void selectConFlight(ActionEvent event) {
         int remaining = 0;
         if (firstRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "First");
+            remaining = businessLogic.bookSeat(selectedConFlight, "First") - Integer.parseInt(ticket.getText())+1;
         } else if (businessRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "Business");
+            remaining = businessLogic.bookSeat(selectedConFlight, "Business") - Integer.parseInt(ticket.getText())+1;
         } else if (economyRB.isSelected()) {
-            remaining = businessLogic.bookSeat(selectedConFlight, "Economy");
+            remaining = businessLogic.bookSeat(selectedConFlight, "Economy") - Integer.parseInt(ticket.getText())+1;
         }
         if (remaining < 0)
             bookSelectedConFlightButton.setText("Error: This flight had no "
@@ -160,6 +171,7 @@ public class FlightBookingController {
                     setText("Your ticket has been booked. Remaining tickets = " +
                             remaining);
         bookSelectedConFlightButton.setDisable(true);
+        conFlightList.getItems().clear();
 
     }
 
@@ -175,6 +187,7 @@ public class FlightBookingController {
         setBusinessLogic(new AeroplofFlightBooker());
 
     }
+
 
 
 }
