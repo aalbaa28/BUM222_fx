@@ -19,6 +19,7 @@ public class ConcreteFlight {
 	private int freeBusinessSeats;
 	private int freeEconomySeats;
 
+
 	public ConcreteFlight(String code, Date date, int firstSeats, int businessSeats,
 			int economySeats, String time, Flight flight) {
 		this.cfCode = code;
